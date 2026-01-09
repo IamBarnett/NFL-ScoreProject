@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFL Playoffs Polla 2025</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    
+    <!-- ========== SCREEN: LOGIN ========== -->
+    <div id="loginScreen" class="screen auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-icon">🏈</div>
+                <h1 class="auth-title">NFL PLAYOFFS</h1>
+                <p class="auth-subtitle">Polla 2025 - Super Bowl LIX</p>
+            </div>
+
+            <div id="loginError" class="error-message hidden"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="tu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-full">INGRESAR</button>
+            </form>
+
+            <div class="auth-link">
+                ¿No tienes cuenta? <a onclick="showScreen('register')">Regístrate aquí</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SCREEN: REGISTER ========== -->
+    <div id="registerScreen" class="screen auth-container hidden">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-icon">📝</div>
+                <h1 class="auth-title">REGISTRO</h1>
+                <p class="auth-subtitle">Únete a la Polla NFL 2025</p>
+            </div>
+
+            <div id="registerError" class="error-message hidden"></div>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-input" id="registerNombre" placeholder="Juan" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Apellido</label>
+                    <input type="text" class="form-input" id="registerApellido" placeholder="Pérez" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="registerEmail" placeholder="tu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" class="form-input" id="registerPassword" placeholder="••••••••" minlength="6" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirmar Contraseña</label>
+                    <input type="password" class="form-input" id="registerConfirmPassword" placeholder="••••••••" minlength="6" required>
+                </div>
+
+                <button type="submit" class="btn btn-full">REGISTRARSE</button>
+            </form>
+
+            <div id="registerSuccess" class="success-message hidden" style="margin-top: 20px;">
+                <h3>¡Registro Exitoso!</h3>
+                <p style="margin: 15px 0;">Tu solicitud de registro ha sido enviada.</p>
+                <div id="newUserData" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin: 15px 0; text-align: left; font-size: 14px;"></div>
+                <div class="info-message">
+                    <strong>📧 Próximo paso:</strong><br>
+                    El administrador debe agregar estos datos manualmente a la hoja "Users" en Google Sheets.<br>
+                    Una vez agregado, podrás iniciar sesión.
+                </div>
+                <button onclick="goToLogin()" class="btn btn-full" style="margin-top: 15px;">IR AL LOGIN</button>
+            </div>
+
+            <div class="auth-link">
+                ¿Ya tienes cuenta? <a onclick="goToLogin()">Inicia sesión aquí</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SCREEN: MAIN APP ========== -->
+    <div id="mainScreen" class="screen hidden">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🏈</div>
+                    <div class="logo-text">
+                        <h1>NFL PLAYOFFS POLLA</h1>
+                        <p>Super Bowl LIX • 2025</p>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <span id="userName">Usuario</span>
+                    <button onclick="logout()" class="btn-logout">Salir</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-content">
+                <div class="nav-item active" onclick="showDashboard()">Dashboard</div>
+                <div class="nav-item" onclick="showLeaderboard()">Leaderboard</div>
+                <div class="nav-item" onclick="showAdmin()">Admin</div>
+            </div>
+        </nav>
+
+        <!-- Container -->
+        <div class="container">
+            <!-- DASHBOARD SECTION -->
+            <div id="dashboardSection">
+                <div class="card">
+                    <h2 class="card-title">Mi Dashboard</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🏆</div>
+                            <div class="stat-label">Mi Posición</div>
+                            <div class="stat-value" id="userRank">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-label">Puntos Totales</div>
+                            <div class="stat-value" id="userPoints">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-label">Wild Card</div>
+                            <div class="stat-value" id="userWildCard">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🔥</div>
+                            <div class="stat-label">Divisional</div>
+                            <div class="stat-value" id="userDivisional">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">Top 10 Jugadores</h2>
+                    <div id="dashboardLoading" class="loading">
+                        <div class="spinner"></div>
+                        Cargando datos...
+                    </div>
+                    <table class="leaderboard-table hidden" id="dashboardTable">
+                        <thead>
+                            <tr>
+                                <th>Pos</th>
+                                <th>Jugador</th>
+                                <th>WC</th>
+                                <th>DIV</th>
+                                <th>CONF</th>
+                                <th>SB</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboardTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- LEADERBOARD SECTION -->
+            <div id="leaderboardSection" class="hidden">
+                <div class="card">
+                    <h2 class="card-title">Podio</h2>
+                    <div class="podium" id="podium"></div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">Clasificación Completa</h2>
+                    <div id="leaderboardLoading" class="loading">
+                        <div class="spinner"></div>
+                        Cargando clasificación...
+                    </div>
+                    <table class="leaderboard-table hidden" id="leaderboardTable">
+                        <thead>
+                            <tr>
+                                <th>Pos</th>
+                                <th>Jugador</th>
+                                <th>Wild Card</th>
+                                <th>Divisional</th>
+                                <th>Conference</th>
+                                <th>Super Bowl</th>
+                                <th>Total</th>
+                                <th>Premio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ADMIN SECTION -->
+            <div id="adminSection" class="hidden">
+                <div class="card">
+                    <h2 class="card-title">Panel de Administración</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-label">Participantes</div>
+                            <div class="stat-value" id="totalParticipants">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-label">Promedio</div>
+                            <div class="stat-value" id="avgPoints">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-label">Puntuación Máxima</div>
+                            <div class="stat-value" id="maxPoints">0</div>
+                        </div>
+                    </div>
+                    <div class="info-message" style="margin-top: 30px;">
+                        📝 Para actualizar puntos y gestionar usuarios, edita directamente tu Google Sheet
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/register.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/leaderboard.js"></script>
+    <script src="js/admin.js"></script>
+    
+    <script>
+        // ===== INICIALIZACIÓN =====
+        window.onload = () => {
+            // Inicializar eventos de formularios
+            initLogin();
+            initRegister();
+            
+            // Verificar si hay usuario logueado
+            const user = loadUser();
+            if (user) {
+                showScreen('main');
+                loadDashboard();
+            } else {
+                showScreen('login');
+            }
+        };
+    </script>
+</body>
+</html>
